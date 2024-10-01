@@ -23,12 +23,10 @@ public class CSVImporter {
         this.bookDAO = new BookDAO();
     }
 
-    // Method to import books from CSV into the database
     public void importBooks(String csvFilePath) {
         try (CSVReader csvReader = new CSVReader(new FileReader(csvFilePath))) {
             List<String[]> records = csvReader.readAll();
 
-            // Skip header (the first line)
             records.remove(0);
 
             for (String[] record : records) {
@@ -47,7 +45,6 @@ public class CSVImporter {
         }
     }
 
-    // Helper method to map a CSV record to a Book object
     private Book mapCsvRecordToBook(String[] record) throws ParseException {
         if (record.length < 6) {
             System.err.println("Invalid record: " + String.join(",", record));
@@ -55,18 +52,16 @@ public class CSVImporter {
         }
 
         String title = record[1];
-        String authorNames = record[2]; // Multiple authors could be comma-separated
+        String authorNames = record[2];
         String language = record[3];
         int pages = Integer.parseInt(record[4]);
         Date publicationDate = new SimpleDateFormat("yyyy-MM-dd").parse(record[5]);
-
-        // Parse authors
+        
         List<Author> authors = parseAuthors(authorNames);
 
         return new Book(title, language, publicationDate, pages, authors);
     }
 
-    // Helper method to parse authors from a CSV record (multiple authors might be comma-separated)
     private List<Author> parseAuthors(String authorNames) {
         String[] authorArray = authorNames.split(",");
         List<Author> authors = new ArrayList<>();
@@ -78,7 +73,7 @@ public class CSVImporter {
     }
 
     public static void main(String[] args) {
-        String csvFilePath = "path/to/your/books.csv"; // Update the path to your CSV file
+        String csvFilePath = "path/to/your/books.csv";
         CSVImporter csvImporter = new CSVImporter();
         csvImporter.importBooks(csvFilePath);
     }

@@ -4,9 +4,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="authors")
-@NamedQuery(name = "Author.findByName", query = "SELECT a FROM Author a WHERE a.name LIKE :name")
-public class Author {
+@Table(name="publishing_houses")
+public class PublishingHouse {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -14,22 +14,13 @@ public class Author {
     @Column(nullable = false)
     private String name;
 
-    @Column(name="language")
-    String language;
-
-    @ManyToMany(mappedBy = "authors")
+    @OneToMany(mappedBy = "publishingHouse", cascade = CascadeType.ALL)
     private List<Book> books;
 
-    public Author() {}
+    public PublishingHouse() {}
 
-    public Author(String name) {
+    public PublishingHouse(String name) {
         this.name = name;
-    }
-
-    public Author(String name, String language) {
-    }
-
-    public Author(int id, String name) {
     }
 
     public int getId() {
@@ -48,10 +39,11 @@ public class Author {
         this.name = name;
     }
 
-
-    public String getLanguage() {
-        return language;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setLanguage(String language) {}
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }
